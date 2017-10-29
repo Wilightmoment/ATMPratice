@@ -1,5 +1,7 @@
 package com.example.user.atmpratice;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         psd=(EditText) findViewById(R.id.et_2);
         login=(Button) findViewById(R.id.btn_1);
         cancel=(Button) findViewById(R.id.btn_2);
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,8 +54,16 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences pref = getSharedPreferences("atm",MODE_PRIVATE);
                     pref.edit().putString("PREF_USER",user).commit();
                     Toast.makeText(MainActivity.this,"登入成功",Toast.LENGTH_SHORT).show();
+                    getIntent().putExtra("Login_user",user);
+                    getIntent().putExtra("Login_pwd",pwd);
+                    setResult(RESULT_OK,getIntent());
+                    finish();
                 }else{
-                    Toast.makeText(MainActivity.this,"登入失敗",Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("ATM")
+                            .setMessage("登入失敗")
+                            .setPositiveButton("OK",null)
+                            .show();
                 }
             }
         });
